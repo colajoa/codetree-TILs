@@ -8,7 +8,7 @@ public class Main {
     static int[] dc = { 0, 1, 0, -1 };
     static Knight[] knights;
     static boolean[] visited;
-    static Queue<Integer> q = new ArrayDeque<>();
+    static Queue<Integer> knightsQ = new ArrayDeque<>();
 
     static class Knight {
         int r, c, h, w, k, damage;
@@ -25,10 +25,10 @@ public class Main {
 
     static boolean checkHitWall(int k, int d) {
         visited[k] = true;
-        q.add(k);
+        knightsQ.add(k);
 
-        while (!q.isEmpty()) {
-            int now = q.poll();
+        while (!knightsQ.isEmpty()) {
+            int now = knightsQ.poll();
             int r = knights[now].r;
             int c = knights[now].c;
 
@@ -49,7 +49,7 @@ public class Main {
                     } else if (nr >= 1 && nr <= L && nc >= 1 && nc <= L && map[1][nr][nc] > 0
                             && !visited[map[1][nr][nc]]) {
                         visited[map[1][nr][nc]] = true;
-                        q.add(map[1][nr][nc]);
+                        knightsQ.add(map[1][nr][nc]);
                     }
                 }
             }
@@ -69,7 +69,7 @@ public class Main {
                     } else if (nr >= 1 && nr <= L && nc >= 1 && nc <= L && map[1][nr][nc] > 0
                             && !visited[map[1][nr][nc]]) {
                         visited[map[1][nr][nc]] = true;
-                        q.add(map[1][nr][nc]);
+                        knightsQ.add(map[1][nr][nc]);
                     }
                 }
             }
@@ -100,11 +100,10 @@ public class Main {
                     }
                     nr += dr[d];
                     for (int from = 0; from < to; from++) {
-                        map[1][nr][nc] = i;
-                        if (map[1][nr - (dr[d] * knights[i].h)][nc] == i) {
-                            map[1][nr - (dr[d] * knights[i].h)][nc] = 0;
+                        map[1][nr][nc + from] = i;
+                        if (map[1][nr - (dr[d] * knights[i].h)][nc + from] == i) {
+                            map[1][nr - (dr[d] * knights[i].h)][nc + from] = 0;
                         }
-                        nc += 1;
                     }
                 }
 
@@ -116,12 +115,11 @@ public class Main {
                     }
                     nc += dc[d];
                     for (int from = 0; from < to; from++) {
-                        map[1][nr][nc] = i;
-                        if (map[1][nr][nc - (dc[d] * knights[i].w)] == i) {
-                            map[1][nr][nc - (dc[d] * knights[i].w)] = 0;
+                        map[1][nr + from][nc] = i;
+                        if (map[1][nr + from][nc - (dc[d] * knights[i].w)] == i) {
+                            map[1][nr + from][nc - (dc[d] * knights[i].w)] = 0;
 
                         }
-                        nr += 1;
                     }
                 }
 
@@ -155,6 +153,28 @@ public class Main {
             }
         }
 
+    }
+
+    // 4 3 1
+    // 0 0 1 0
+    // 0 0 1 0
+    // 1 1 0 1
+    // 0 0 2 0
+    // 1 2 2 1 5
+    // 2 1 2 1 1
+    // 3 2 1 2 3
+    // 1 2
+    // 2 1
+    // 3 3
+
+    static void print() {
+        for (int r = 1; r < L + 1; r++) {
+            for (int c = 1; c < L + 1; c++) {
+                System.out.print(map[1][r][c] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 
     public static void main(String[] args) throws Exception {
@@ -204,6 +224,7 @@ public class Main {
                 continue;
             }
             if (!checkHitWall(k, d)) {
+                knightsQ.clear();
                 continue;
             } else {
                 move(d);
