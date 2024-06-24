@@ -12,7 +12,7 @@ public class Main {
     static int[] dc = { 1, 1, 0, -1, -1, -1, 0, 1 };
     static LinkedList<Turret> turrets = new LinkedList<>();
 
-    static class Turret {
+    static class Turret implements Comparable<Turret> {
         int r, c, AD, k;
 
         public Turret(int r, int c, int AD, int k) {
@@ -22,24 +22,24 @@ public class Main {
             this.k = k;
         }
 
+        public int compareTo(Turret o) {
+            if (this.AD == o.AD) {
+                if (this.k == o.k) {
+                    if ((o.r + o.c) == (this.r + this.c)) {
+                        return o.c - this.c;
+                    }
+                    return (o.r + o.c) - (this.r + this.c);
+                }
+                return o.k - this.k;
+            }
+            return this.AD - o.AD;
+        }
+
     }
 
     static void bfs() {
-        Collections.sort(turrets, new Comparator<Turret>() {
-            public int compare(Turret t1, Turret t2) {
-                if (t1.AD == t2.AD) {
-                    if (t1.k == t2.k) {
-                        if ((t2.r + t2.c) == (t1.r + t1.c)) {
-                            return t2.c - t1.c;
-                        }
-                        return (t2.r + t2.c) - (t1.r + t1.c);
-                    }
-                    return t2.k - t1.k;
-                }
-                return t1.AD - t2.AD;
-            }
-        });
-        
+        Collections.sort(turrets);
+
         from = turrets.removeFirst();
         to = turrets.removeLast();
         from.AD += (N + M);
