@@ -61,6 +61,7 @@ public class Main {
                 }
             }
         }
+
         map[mr][mc] = -1;
         q[time].add(new Point(mr, mc));
         visited[time][mr][mc] = true;
@@ -73,13 +74,6 @@ public class Main {
         for (int i = 0; i < size; i++) {
             Point now = q[man].poll();
 
-            if (now.r == mans[man].r && now.c == mans[man].c) {
-                q[man].clear();
-                map[now.r][now.c] = -1;
-                finished -= 1;
-                return;
-            }
-
             for (int d = 0; d < 4; d++) {
                 int nr = now.r + dr[d];
                 int nc = now.c + dc[d];
@@ -87,19 +81,15 @@ public class Main {
                 if (nr >= 0 && nr < N && nc >= 0 && nc < N && !visited[man][nr][nc] && map[nr][nc] >= 0) {
                     q[man].add(new Point(nr, nc));
                     visited[man][nr][nc] = true;
+                    if (nr == mans[man].r && nc == mans[man].c) {
+                        q[man].clear();
+                        map[nr][nc] = -1;
+                        finished -= 1;
+                        return;
+                    }
                 }
             }
         }
-    }
-
-    static void print() {
-        for (int r = 0; r < N; r++) {
-            for (int c = 0; c < N; c++) {
-                System.out.print(map[r][c] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
     }
 
     public static void main(String[] args) throws Exception {
@@ -133,21 +123,18 @@ public class Main {
         time = 0;
 
         while (time < M) {
-            searchCamp(time + 1);
-            for (int i = 1; i <= time; i++) {
+            time++;
+            for (int i = 1; i < time; i++) {
                 move(i);
             }
-            time++;
+            searchCamp(time);
         }
         while (finished != 0) {
             for (int m = 1; m < M + 1; m++) {
-                if (q[m].size() == 0) {
-                    continue;
-                }
                 move(m);
             }
             time++;
         }
-        System.out.println(--time);
+        System.out.println(time);
     }
 }
