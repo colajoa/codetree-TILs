@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int N, M, K, pathMin = Integer.MAX_VALUE;
+    static int N, M, K, pathMin = Integer.MAX_VALUE, time = 1;
     static int[][] map;
     static boolean[][] visited;
     static int[][][] path;
@@ -39,13 +39,12 @@ public class Main {
                 return t1.AD - t2.AD;
             }
         });
-
-
+        
         from = turrets.removeFirst();
         to = turrets.removeLast();
         from.AD += (N + M);
         map[from.r][from.c] = from.AD;
-        from.k += 1;
+        from.k = time++;
 
         to.AD -= from.AD;
 
