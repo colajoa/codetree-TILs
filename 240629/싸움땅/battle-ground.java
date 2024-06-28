@@ -46,12 +46,13 @@ public class Main {
                 int size = field[nr][nc].size();
                 if (size > 0) {
                     Collections.sort(field[nr][nc]);
-
                     // 내 총보다 좋을 때
                     if (player.gun < field[nr][nc].get(size - 1)) {
                         int gun = player.gun;
                         player.gun = field[nr][nc].remove(size - 1);
-                        field[nr][nc].add(gun);
+                        if (gun != 0) {
+                            field[nr][nc].add(gun);
+                        }
                     }
                 }
             } else {
@@ -75,8 +76,10 @@ public class Main {
                 visited[nr][nc] = win;
 
                 int gun = players[lose].gun;
-                players[lose].gun = 0;
-                field[nr][nc].add(gun);
+                if (gun != 0) {
+                    field[nr][nc].add(gun);
+                    players[lose].gun = 0;
+                }
 
                 for (int d = 0; d < 4; d++) {
                     nr = players[lose].r + dr[players[lose].d];
@@ -90,7 +93,7 @@ public class Main {
 
                         if (size > 0) {
                             Collections.sort(field[nr][nc]);
-                            players[lose].gun = field[nr][nc].get(size - 1);
+                            players[lose].gun = field[nr][nc].remove(size - 1);
                         }
 
                         break;
@@ -104,9 +107,10 @@ public class Main {
                 nr = players[win].r;
                 nc = players[win].c;
                 Collections.sort(field[nr][nc]);
+
                 int size = field[nr][nc].size();
 
-                if (gun < field[nr][nc].get(size - 1)) {
+                if (size > 0 && gun < field[nr][nc].get(size - 1)) {
                     players[win].gun = field[nr][nc].remove(size - 1);
                     field[nr][nc].add(gun);
                 }
