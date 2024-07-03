@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int N, M, K, sr = 0, sc = 0;
+    static int N, M, K, sr = -1, sc = 0;
     static int[] dr = { -1, 0, 1, 0 };
     static int[] dc = { 0, 1, 0, -1 };
     static int[] tr = { 1, -1, -1, 1 };
@@ -126,18 +126,19 @@ public class Main {
         // 던지기
         // 좌 -> 우 상 -> 하
         if (dir % 2 == 0) {
+            sr = sr + tr[dir];
             for (int n = 0; n < N; n++) {
                 int nc = sc + (tc[dir] * n);
+                // System.out.println("R " + sr + " C " + sc + " NC " + nc);
                 if (map[sr][nc] != 0 && map[sr][nc] != 4) {
                     getScore(sr, nc);
                     break;
                 }
             }
-            sr = sr + tr[dir];
         } else {
             for (int n = 0; n < N; n++) {
                 int nr = sr + (tr[dir] * n);
-
+                // System.out.println("R " + sr + " C " + sc + " NR " + nr);
                 if (map[nr][sc] != 0 && map[nr][sc] != 4) {
                     getScore(nr, sc);
                     break;
@@ -156,6 +157,7 @@ public class Main {
 
             if (p.r == r && p.c == c) {
                 score += (i + 1) * (i + 1);
+                // System.out.println("Score " + score + "\n");
                 break;
             }
         }
@@ -207,13 +209,14 @@ public class Main {
             q.add(heads.poll());
             getPos(m);
         }
+
         // System.out.println();
         // print(path);
         // for (int m = 1; m < M + 1; m++) {
-        // for (Point p : teams[m]) {
-        // System.out.println(p.r + " " + p.c);
-        // }
-        // System.out.println();
+        //     for (Point p : teams[m]) {
+        //         System.out.println(p.r + " " + p.c);
+        //     }
+        //     System.out.println();
         // }
 
         int round = 0;
@@ -230,7 +233,9 @@ public class Main {
 
             for (int k = 0; k < round; k++) {
                 move();
+                // print(map);
                 throwBall(turn);
+                // print(map);
             }
 
             turn = (turn + 1) % 4;
