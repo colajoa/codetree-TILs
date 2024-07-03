@@ -44,6 +44,8 @@ public class Main {
 
                     if (map[now.r][now.c] == 1 && map[nr][nc] == 3)
                         continue;
+                    else if (map[now.r][now.c] == 4 && map[nr][nc] == 3)
+                        continue;
                     visited[nr][nc] = true;
                     q.add(new Point(nr, nc));
 
