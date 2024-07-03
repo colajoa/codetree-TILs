@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int N, M, K, sr = -1, sc = 0;
+    static int N, M, K, sr = 0, sc = 0;
     static int[] dr = { -1, 0, 1, 0 };
     static int[] dc = { 0, 1, 0, -1 };
     static int[] tr = { 1, -1, -1, 1 };
@@ -122,11 +122,10 @@ public class Main {
         }
     }
 
-    static void throwBall(int dir) {
+    static void throwBall(int dir, int round) {
         // 던지기
         // 좌 -> 우 상 -> 하
         if (dir % 2 == 0) {
-            sr = sr + tr[dir];
             for (int n = 0; n < N; n++) {
                 int nc = sc + (tc[dir] * n);
                 // System.out.println("R " + sr + " C " + sc + " NC " + nc);
@@ -134,6 +133,9 @@ public class Main {
                     getScore(sr, nc);
                     break;
                 }
+            }
+            if(round != N - 1){
+                sr = sr + tr[dir];
             }
         } else {
             for (int n = 0; n < N; n++) {
@@ -144,7 +146,9 @@ public class Main {
                     break;
                 }
             }
-            sc = sc + tc[dir];
+            if(round != N - 1) {
+                sc = sc + tc[dir];
+            }
         }
     }
 
@@ -234,7 +238,7 @@ public class Main {
             for (int k = 0; k < round; k++) {
                 move();
                 // print(map);
-                throwBall(turn);
+                throwBall(turn, k);
                 // print(map);
             }
 
