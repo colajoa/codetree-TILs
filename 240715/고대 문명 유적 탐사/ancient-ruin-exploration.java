@@ -28,6 +28,30 @@ public class Main {
         }
     }
 
+    static class PartPoint implements Comparable<PartPoint> {
+        int cnt, angle, r, c;
+
+        public PartPoint(int cnt, int angle, int r, int c) {
+            this.cnt = cnt;
+            this.angle = angle;
+            this.r = r;
+            this.c = c;
+        }
+
+        public int compareTo(PartPoint p) {
+            if (p.cnt == this.cnt) {
+                if (this.angle == p.angle) {
+                    if (this.c == p.c) {
+                        return this.r - p.r;
+                    }
+                    return this.c - p.c;
+                }
+                return this.angle - p.angle;
+            }
+            return p.cnt - this.cnt;
+        }
+    }
+
     static void find() {
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
@@ -106,6 +130,16 @@ public class Main {
             }
         }
 
+    }
+
+    static void print(int[][] arr) {
+        for (int r = 0; r < 5; r++) {
+            for (int c = 0; c < 5; c++) {
+                System.out.print(arr[r][c] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 
     static int[][] rotate(int nr, int nc, int angle) {
@@ -194,11 +228,11 @@ public class Main {
                 sc = nc;
             } else if (cnt == max) {
                 if (angle == sa) {
-                    if (sr == nr) {
-                        if (sc > nc) {
-                            sc = nc;
+                    if (sc == nc) {
+                        if (sr > nr) {
+                            sr = nr;
                         }
-                    } else if (sr > nr) {
+                    } else if (sc > nc) {
                         sr = nr;
                         sc = nc;
                     }
