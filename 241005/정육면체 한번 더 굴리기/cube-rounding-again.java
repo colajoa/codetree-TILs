@@ -72,18 +72,16 @@ public class Main {
 
             dice[1][2] = flag;
         }
-
-        moveDir();
     }
 
     // 진행 방향 바꾸기
     static void moveDir() {
         // 주사위 밑면이 더 크다 시계 방향
-        if(board[sr][sc] > dice[3][1]) {
+        if(board[sr][sc] < dice[3][1]) {
             D = (D + 1) % 4;
         } 
         // 주사위 밑면이 더 작다 반시계 방향
-        else if(board[sr][sc] < dice[3][1]) {
+        else if(board[sr][sc] > dice[3][1]) {
             D = (4 + (D - 1)) % 4;
         }
     }
@@ -141,6 +139,7 @@ public class Main {
         for(int m = 0; m < M; m++) {
             moveDice();
             bfs();
+            moveDir();
         }
 
         System.out.println(ans);
