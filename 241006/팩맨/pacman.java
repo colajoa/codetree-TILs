@@ -71,6 +71,7 @@ public class Main {
             
             pr = pr + dr[packStep[i]];
             pc = pc + dc[packStep[i]];
+
             if(!visited[pr][pc]) {
                 visited[pr][pc] = true;
                 int size = monsters[pr][pc].size();
@@ -111,7 +112,7 @@ public class Main {
 
                 for(int i = size - 1; i > -1; i--) {
                     Monster mon = monsters[r][c].get(i);
-                    if(mon.state == 1 && mon.isMoved == turn) {
+                    if(mon.state == 1 && mon.isMoved <= turn) {
                         for(int d = 0; d < 8; d++) {
                             int nr = r + dr[(mon.dir + d) % 8];
                             int nc = c + dc[(mon.dir + d) % 8];
